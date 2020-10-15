@@ -28,7 +28,7 @@ public class HsqldbConnectionUtil {
                 String dbName = properties.getProperty("db.name");
                 String user = properties.getProperty("db.user");
                 String password = properties.getProperty("db.password");
-                String url = "jdbc:hsqldb:file:" + dbName;
+                String url = "jdbc:hsqldb:file:" + dbName + ";shutdown=true";
                 if (dbName != null && user != null && password != null) {
                     try {
                         Class.forName("org.hsqldb.jdbc.JDBCDriver");

@@ -17,3 +17,8 @@ Build and Run
 	```
 
 2. Open `http://localhost:8080` in a web browser.
+
+3. Debug in IntelliJ IDEA Database tool:<br/><br/>
+Data Source: `HSQLDB`<br/>
+Connection type: `URL only`<br/>
+url: `jdbc:hsqldb:file:C:\Users\username\IdeaProjects\test-task\test_task;hsqldb.lock_file=false`<br/>

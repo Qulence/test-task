@@ -1,0 +1,2 @@
+INSERT INTO AUTHOR (FIRSTNAME, LASTNAME, PATRONYMIC)VALUES ('Dmitry', 'Rybnikov', 'Vladimirovich');
+INSERT INTO AUTHOR (FIRSTNAME, LASTNAME, PATRONYMIC)VALUES ('Vladislav', 'Pozharnikov', 'Mihailovich');
