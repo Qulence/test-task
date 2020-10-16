@@ -28,6 +28,7 @@ public class MainUI extends UI {
         try {
             HsqldbConnectionUtil hsqldbConnectionUtil = HsqldbConnectionUtil.newInstance();
             HsqldbManager hsqldbManager = new HsqldbManager(hsqldbConnectionUtil);
+            //todo relative paths
             hsqldbManager.executeQueryFromScript("C:\\Users\\Qulence\\IdeaProjects\\test-task\\dbCreate.sql", StandardCharsets.UTF_8);
             hsqldbManager.executeQueryFromScript("C:\\Users\\Qulence\\IdeaProjects\\test-task\\dbInsert.sql", StandardCharsets.UTF_8);
 
