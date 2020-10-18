@@ -20,26 +20,63 @@ public class AuthorDao implements Dao<Author, Long> {
     }
 
     @Override
-    public void save(Author entity) {
-
+    public boolean save(Author author) {
+        try (Connection connection = hsqldbConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO AUTHOR(FIRSTNAME, LASTNAME, PATRONYMIC) VALUES (?,?,?)")) {
+            preparedStatement.setString(1, author.getFirstname());
+            preparedStatement.setString(2, author.getLastname());
+            preparedStatement.setString(3, author.getPatronymic());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    public void update(Author entity) {
-
+    public boolean update(Author author) {
+        //todo test
+        if (getById(author.getId()).isPresent()) {
+            try (Connection connection = hsqldbConnectionUtil.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(
+                         "UPDATE AUTHOR SET FIRSTNAME = (?), LASTNAME= (?), PATRONYMIC = (?) WHERE ID = (?)")) {
+                preparedStatement.setString(1, author.getFirstname());
+                preparedStatement.setString(2, author.getLastname());
+                preparedStatement.setString(3, author.getPatronymic());
+                preparedStatement.setLong(4, author.getId());
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public boolean deleteById(Long id) {
+        //todo test
+        if (getById(id).isPresent()) {
+            try (Connection connection = hsqldbConnectionUtil.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(
+                         "DELETE FROM AUTHOR WHERE ID = (?)")) {
+                preparedStatement.setLong(1, id);
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override
     public List<Author> getAll() {
         List<Author> result = new LinkedList<>();
         try (Connection connection = hsqldbConnectionUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM AUTHOR");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM AUTHOR");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 Long id = resultSet.getLong(1);
@@ -55,7 +92,23 @@ public class AuthorDao implements Dao<Author, Long> {
     }
 
     @Override
-    public Optional<Author> getById(Long aLong) {
+    public Optional<Author> getById(Long id) {
+        try (Connection connection = hsqldbConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM AUTHOR WHERE ID = (?)")) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Long authorId = resultSet.getLong(1);
+                String firstname = resultSet.getString(2);
+                String lastname = resultSet.getString(3);
+                String patronymic = resultSet.getString(4);
+                return Optional.of(new Author(authorId, firstname, lastname, patronymic));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return Optional.empty();
     }
+
 }

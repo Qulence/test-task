@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T, ID> {
-    void save(T entity);
+    boolean save(T entity);
 
-    void update(T entity);
+    boolean update(T entity);
 
-    void deleteById(ID id);
+    boolean deleteById(ID id);
 
     List<T> getAll();
 
